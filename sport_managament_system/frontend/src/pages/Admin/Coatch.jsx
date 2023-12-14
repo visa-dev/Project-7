@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
-import axios from 'axios';
+import FormDialog from '../Popups/addCoatch.jsx';
 
 const AddCoatch = () => {
 
 
-  // const dataSource = axios.get('http://localhost:5000/api/coatch/show');
-
-
-
+  //show all data
   const [dataSource, setDataSource] = useState([]);
   useState(() => {
     fetch('http://localhost:5000/api/coatch/show')
@@ -18,29 +15,6 @@ const AddCoatch = () => {
 
   }, []);
 
-
-
-  //   {
-  //     id: 1,
-  //     name: 'Jhone',
-  //     email: 'Visa@gmail.com',
-  //     address: 'kegalle'
-
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Jhone',
-  //     email: 'Visa@gmail.com',
-  //     address: 'kegalle'
-
-  //   }, {
-  //     id: 3,
-  //     name: 'Jhone',
-  //     email: 'Visa@gmail.com',
-  //     address: 'kegalle'
-
-  //   }
-  // ]);
 
   const columns = [
     {
@@ -97,43 +71,31 @@ const AddCoatch = () => {
     }
   ];
 
-  // const addCoatch = () => {
 
-  //   const newCoatch = {
-  //     id: 4,
-  //     name: 'Jhone4',
-  //     email: 'Visa@gmail.com',
-  //     address: 'kegalle'
-  //   }
-  //   setDataSource(pre => {
-  //     return [...pre, newCoatch];
-  //   })
-  // }
+  const [open, setOpen] = React.useState(false);
 
-  // const deleteCoatch = (recode) => {
-  //   Modal.confirm({
-  //     title: 'Are you sure, you want to delete this recode ',
-  //     okText:'Yes',
-  //     okType:'danger',
-  //     onOk: () => {
-  //       setDataSource((pre) => {
-  //         return pre.filter((coatch => coatch.id !== recode.id));
-  //       });
-  //     }
-  //   });
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-  // }
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  console.log(open);
 
   return (
+
     <div className='border-2 p-[50px]'>
-      <Button>Add a new Coatch</Button>
+      <Button onClick={handleClickOpen} >+ Add Coatch </Button>
+      
+      <FormDialog open={open} handleClose={handleClose} />
+      <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource}  ></Table>
 
-      <Table columns={columns} dataSource={dataSource} >
-
-
-      </Table>
 
     </div>
+
+
   );
 }
 
