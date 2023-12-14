@@ -4,18 +4,27 @@ import Coatch from '../models/Coatch.js';
 export const showCoatch = async (req, res) => {
 
     try {
-        res.send("Api is worknggg");
-    } catch (error) {
+        const allCoatch = await Coatch.find();
+        res.status(200).json(allCoatch);
 
+    } catch (error) {
+        res.status(400).json({ success: false, message: 'Coatch Create No' });
     }
 }
 
 export const addCoatch = async (req, res) => {
 
-    const { gametype, worktime } = req.body;
+    const { gametype, worktime, name, gender, dob, email, mobile, photo } = req.body;
     const newCoatch = new Coatch({
         gametype,
-        worktime
+        worktime,
+        name,
+        gender,
+        dob,
+        email,
+        mobile,
+        photo
+
     });
 
     try {
