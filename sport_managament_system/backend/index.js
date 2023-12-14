@@ -4,7 +4,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-import authRoute from './Routes/auth.js';
+import authRoute from './Routes/authRoute.js';
+import coatchRoute from './Routes/coatchRoute.js';
 
 dotenv.config();
 const app = express();
@@ -15,9 +16,15 @@ const corsOptions = {
 }
 
 
-app.get('/', (req, res) => {
-    res.send("Api is working");
-})
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use('/api/auth', authRoute);
+app.use('/api/coatch', coatchRoute);
+app.use(cookieParser);
+
+// app.get('/api', (req, res) => {
+//     res.send("Api is working");
+// })
 
 //databse connection
 
@@ -36,13 +43,12 @@ const connectDB = async () => {
 
 //middlewares
 
-app.use(express.json());
-app.use(cookieParser);
-app.use(cors(corsOptions));
+
+
 
 //routes
 
-app.use('api/auth', authRoute);
+
 
 
 app.listen(port, () => {

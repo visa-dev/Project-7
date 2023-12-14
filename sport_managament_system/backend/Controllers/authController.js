@@ -1,5 +1,6 @@
-export const register = async () => {
+export const register = async (req, res) => {
 
+    
     try {
 
     } catch (error) {
@@ -10,7 +11,7 @@ export const register = async () => {
 export const login = async () => {
 
     try {
-
+        
     } catch (error) {
 
     }
