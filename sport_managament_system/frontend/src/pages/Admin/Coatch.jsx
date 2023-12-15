@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import { Table, Button, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 import FormDialog from '../Popups/addCoatch.jsx';
@@ -13,6 +14,9 @@ const AddCoatch = () => {
       .then(res => res.json())
       .then(res => setDataSource(res))
 
+
+
+
   }, []);
 
 
@@ -24,41 +28,31 @@ const AddCoatch = () => {
     },
     {
       key: '2',
-      title: 'Work Time',
-      dataIndex: 'worktime'
-    },
-    {
-      key: '3',
       title: 'Name',
       dataIndex: 'name'
     },
     {
-      key: '4',
+      key: '3',
       title: 'Gender',
       dataIndex: 'gender'
+    },
+    {
+      key: '4',
+      title: 'Birthday',
+      dataIndex: 'dob'
     },
     {
       key: '5',
-      title: 'Gender',
-      dataIndex: 'gender'
+      title: 'Email',
+      dataIndex: 'email'
     },
     {
       key: '6',
-      title: 'Dob',
-      dataIndex: 'dob'
+      title: 'Mobile',
+      dataIndex: 'mobile'
     },
     {
       key: '7',
-      title: 'Email',
-      dataIndex: 'dob'
-    },
-    {
-      key: '8',
-      title: 'Mobile',
-      dataIndex: 'dob'
-    },
-    {
-      key: '9',
       title: 'Actions',
       render: (recode) => {
         return <>
@@ -82,15 +76,14 @@ const AddCoatch = () => {
     setOpen(false);
   };
 
-  console.log(open);
 
   return (
 
     <div className='border-2 p-[50px]'>
       <Button onClick={handleClickOpen} >+ Add Coatch </Button>
-      
+
       <FormDialog open={open} handleClose={handleClose} />
-      <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource}  ></Table>
+      <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource} className='border-4 border-solid border-indigo-500' ></Table>
 
 
     </div>

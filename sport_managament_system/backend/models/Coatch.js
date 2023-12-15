@@ -2,13 +2,12 @@ import mongoose from "mongoose";
 
 const CoatchSchema = new mongoose.Schema({
 
-    gametype: { type: String, required: true },
-    worktime: { type: String, required: true },
-    name: { type: String, required: true },
-    gender: { type: String, required: true },
-    dob: { type: String, required: true },
-    email: { type: String, unique: true, required: true },
-    mobile: { type: Number, required: true },
+    gametype: { type: String },
+    name: { type: String },
+    gender: { type: String },
+    dob: { type: String },
+    email: { type: String },
+    mobile: { type: String },
     photo: { type: String },
 
 }

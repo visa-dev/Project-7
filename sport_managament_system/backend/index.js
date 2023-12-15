@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import bodyParser from "body-parser";
 
 import authRoute from './Routes/authRoute.js';
 import coatchRoute from './Routes/coatchRoute.js';
@@ -15,7 +16,8 @@ const corsOptions = {
     origin: true
 }
 
-
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true })); // specil if missed this one req.body is empty
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/api/auth', authRoute);
