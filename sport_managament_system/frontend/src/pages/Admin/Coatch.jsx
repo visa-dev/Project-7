@@ -1,23 +1,55 @@
 import React, { useEffect, useState } from 'react';
-
+import axios from 'axios';
 import { Table, Button, Modal } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 import FormDialog from '../Popups/addCoatch.jsx';
+import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
+
 
 const AddCoatch = () => {
 
 
   //show all data
   const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(true);
   useState(() => {
     fetch('http://localhost:5000/api/coatch/show')
       .then(res => res.json())
       .then(res => setDataSource(res))
-
-
-
-
+      .then(setInterval(() => {
+        setLoading(false);
+      }, 800))
   }, []);
+
+  const editCoatch = (recode) => {
+    console.log(recode);
+
+  }
+
+  const deleteCoatch = (recode) => {
+    Modal.confirm({
+      title: "Are you sure, you want to delete this coatch?",
+      okText: "Yes",
+      okType: "danger",
+      onOk: () => {
+        const tempData = JSON.stringify(recode);
+        const row = JSON.parse(tempData);
+        axios.delete(`http://localhost:5000/api/coatch/delete/${row._id}`)
+          .then(response => {
+            // Handle the response from the server
+            console.log('Response from server:', response.data);
+          })
+          .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+          });
+      }
+    });
+
+
+
+
+  }
 
 
   const columns = [
@@ -57,8 +89,8 @@ const AddCoatch = () => {
       render: (recode) => {
         return <>
           <div className='flex gap-5'>
-            <EditOutlined />
-            <DeleteOutlined style={{ color: 'red' }} />
+            <EditOutlined onClick={editCoatch} />
+            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(recode)} />
           </div>
         </>
       }
@@ -77,13 +109,19 @@ const AddCoatch = () => {
   };
 
 
+
   return (
 
-    <div className='border-2 p-[50px]'>
-      <Button onClick={handleClickOpen} >+ Add Coatch </Button>
+    <div className='border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px]'>
+
 
       <FormDialog open={open} handleClose={handleClose} />
-      <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource} className='border-4 border-solid border-indigo-500' ></Table>
+      {
+        loading ? (<LoadingSpinner />) : (<><Button onClick={handleClickOpen} className='mb-[10px]'>+ Add Coatch </Button>
+          <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource} className='border-4 overflow-y-auto h-[500px]' ></Table></>)
+
+      }
+
 
 
     </div>

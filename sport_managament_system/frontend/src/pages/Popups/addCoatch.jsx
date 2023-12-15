@@ -75,6 +75,8 @@ export default function FormDialog({ open, handleClose }) {
                 console.error('Error:', error);
             });
 
+            handleClose();
+
     }
 
 
