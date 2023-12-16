@@ -50,3 +50,16 @@ export const deleteCoatch = async (req, res) => {
         res.status(400).json({ success: false, message: 'Coatch Delete No' });
     }
 }
+
+export const updateCoatch = async (req, res) => {
+    const id = req.params.id;
+    const updateData = req.body;
+    try {
+        const deleted = await Coatch.findByIdAndUpdate(id, updateData, { new: true });
+        if (deleted) {
+            res.status(200).json({ message: `Delete Ok` });
+        }
+    } catch (error) {
+        res.status(400).json({ success: false, message: 'Coatch Delete No' });
+    }
+}

@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, message, Input } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
-import FormDialog from '../Popups/addCoatch.jsx';
+import FormDialog from '../Popups/AddCoatch.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
 
 
 
 const AddCoatch = () => {
 
-
+  let data = {};
   //show all data
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   //filter serachbar
   const [filterData, setFilterData] = useState();
 
@@ -22,20 +22,22 @@ const AddCoatch = () => {
   }
 
 
-  const fetchData = () => {
-    fetch('http://localhost:5000/api/coatch/show')
+  const fetchData = async () => {
+
+    await fetch('http://localhost:5000/api/coatch/show')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         return response.json();
       })
       .then(data => {
         setDataSource(data)
-        setFilterData(data);
+        setFilterData(data); // get frist time data otherwise empty table load
       }).then(setInterval(() => {
         setLoading(false);
-      }, 100))
+      }, 250))
       .catch(error => {
         // Handle errors here
         console.error('Fetch error:', error);
@@ -49,36 +51,32 @@ const AddCoatch = () => {
   useEffect(() => {
     fetchData();
 
+
   }, []);
 
 
 
 
-  const editCoatch = (recode) => {
-    console.log(recode);
 
-  }
-
-  const deleteCoatch = (recode) => {
+  const deleteCoatch = (id) => {
 
     Modal.confirm({
       title: "Are you sure, you want to delete this coatch?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
-        const tempData = JSON.stringify(recode);
-        const row = JSON.parse(tempData);
-        axios.delete(`http://localhost:5000/api/coatch/delete/${row._id}`)
-          .then(response => {
+
+        axios.delete(`http://localhost:5000/api/coatch/delete/${id}`)
+          .then(() => {
             // Handle the response from the server
-            console.log('Response from server:', response.data);
+            fetchData();
           })
           .catch(error => {
             // Handle errors
             console.error('Error:', error);
           });
 
-        window.location.reload();
+        //window.location.reload();
       }
     });
 
@@ -123,10 +121,14 @@ const AddCoatch = () => {
       key: '7',
       title: 'Actions',
       render: (recode) => {
+        const tempData = JSON.stringify(recode);
+        const rowId = JSON.parse(tempData);
+
         return <>
           <div key={recode.key} className='flex gap-5'>
-            <EditOutlined onClick={editCoatch} />
-            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(recode)} />
+
+            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: rowId, title: "Update Coatch" })} />
+            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(rowId._id)} />
           </div>
         </>
       }
@@ -136,13 +138,37 @@ const AddCoatch = () => {
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
+  const [params, setParams] = useState(0);
+
+  const handleClickOpen = (item) => {
+
+
+    if (item.val === "update") {
+      // data = { title: "Update Coatch", option: item };
+      data = item;
+      
+
+
+
+    } if (item.val === "add") {
+      data = item;;
+
+
+    }
+
     setOpen(true);
+    setParams(data);
+
+
   };
+
 
   const handleClose = () => {
     setOpen(false);
+
   };
+
+
 
 
 
@@ -151,7 +177,7 @@ const AddCoatch = () => {
     <div className='border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
-      <FormDialog open={open} handleClose={handleClose} />
+      <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} />
 
       {
         loading ? (<LoadingSpinner />) : (
@@ -159,18 +185,18 @@ const AddCoatch = () => {
 
             <div className='flex gap-4 mb-[10px] '>
 
-              <Button onClick={handleClickOpen} >+ Add Coatch </Button>
+              <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Coatch" })} > + Add Coatch </Button>
               <Input type='text' placeholder='Search Coatchs' onChange={filterDataSource}></Input>
             </div>
 
-            <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' ></Table>
+            <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
           </>)
 
       }
 
 
 
-    </div>
+    </div >
 
 
   );

@@ -6,16 +6,11 @@ import DialogActions from '@mui/material/DialogActions';
 import axios from 'axios';
 
 import DialogTitle from '@mui/material/DialogTitle';
-import { TextField, MenuItem, Select, } from '@mui/material';
+import { TextField, MenuItem, Select } from '@mui/material';
 
 
 
-// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-// import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
+
 
 
 import { styled } from '@mui/material/styles';
@@ -33,13 +28,9 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
+export default function FormDialog({ open, handleClose, operation, data }) {
 
-
-export default function FormDialog({ open, handleClose }) {
-
-
-
-    const [formData, setFormData] = useState({
+    let [formData, setFormData] = useState({
         gametype: '',
         name: '',
         gender: '',
@@ -52,34 +43,75 @@ export default function FormDialog({ open, handleClose }) {
     const { gametype, name, gender, dob, email, mobile, photo } = formData;
 
 
-    const handleChnage = (e) => {
-        const { value, name } = e.target;
-        //console.log(value, name);
-        setFormData({ ...formData, [name]: value });
+    const handleAddCoatch = async () => {
 
-    }
-
-    const handleaddCoatch = () => {
-
-        axios.post('http://localhost:5000/api/coatch/add', JSON.stringify(formData), {
+        await axios.post('http://localhost:5000/api/coatch/add', JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
         })
-            .then(response => {
-                // Handle the response from the server
-                console.log('Response from server:', response.data);
+            .then((res) => {
+
+                operation(); //fetch data for realtime update
+                setFormData({});
+
+
+
+
             })
             .catch(error => {
                 // Handle errors
                 console.error('Error:', error);
             });
 
-            handleClose();
-            window.location.reload();
+        handleClose();
+        //window.location.reload();
 
     }
 
+    const handleUpdateCoatch = async () => {
+
+
+        await axios.put(`http://localhost:5000/api/coatch/update/${data.object._id}`, JSON.stringify(formData), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => {
+
+                operation();//fetch data
+                setFormData({});
+
+            })
+            .catch(error => {
+                // Handle errors
+                console.error('Error:', error);
+            });
+
+        handleClose();
+        //window.location.reload();
+
+
+    }
+
+    let tempfunction;
+
+    if (data.val === "add") {
+
+        tempfunction = handleAddCoatch;
+    } if (data.val === "update") {
+        tempfunction = handleUpdateCoatch;
+
+    }
+
+
+
+    const handleChnage = (e) => {
+        const { value, name } = e.target;
+        //console.log(value, name);
+        setFormData({ ...formData, [name]: value });
+
+    }
 
     return (
         <React.Fragment>
@@ -91,7 +123,7 @@ export default function FormDialog({ open, handleClose }) {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    <center className='font-[700] '>New Coatch</center>
+                    <center className='font-[700] '>{data.title}</center>
                 </DialogTitle>
                 <div className=' mx-auto pl-[150px] pr-[150px]'>
                     <form action="">
@@ -106,6 +138,7 @@ export default function FormDialog({ open, handleClose }) {
                                 <MenuItem value="Carrom">Carrom</MenuItem>
                                 <MenuItem value="Chess">Chess</MenuItem>
                             </Select>
+
                         </div>
 
                         <div className='mb-[20px]'>
@@ -142,8 +175,8 @@ export default function FormDialog({ open, handleClose }) {
 
                 <DialogActions>
                     <Button onClick={handleClose} variant='outlined' color='secondary'>Cancel</Button>
-                    <Button autoFocus className='text-primaryColor' variant='contained' onClick={handleaddCoatch}>
-                        Add
+                    <Button autoFocus className='text-primaryColor' variant='contained' onClick={tempfunction}>
+                        {data.val}
                     </Button>
                 </DialogActions>
             </Dialog>
