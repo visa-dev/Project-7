@@ -76,6 +76,7 @@ export default function FormDialog({ open, handleClose }) {
             });
 
             handleClose();
+            window.location.reload();
 
     }
 

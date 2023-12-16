@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Button, Modal } from 'antd';
+import { Table, Button, Modal, message } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 import FormDialog from '../Popups/addCoatch.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
+
 
 
 const AddCoatch = () => {
@@ -12,14 +13,37 @@ const AddCoatch = () => {
   //show all data
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  useState(() => {
+
+  const fetchData = () => {
     fetch('http://localhost:5000/api/coatch/show')
-      .then(res => res.json())
-      .then(res => setDataSource(res))
-      .then(setInterval(() => {
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setDataSource(data)
+      }).then(setInterval(() => {
         setLoading(false);
-      }, 800))
+      }, 100))
+      .catch(error => {
+        // Handle errors here
+        console.error('Fetch error:', error);
+        // Notify the user
+        // alert('An error occurred while fetching data. Please try again.');
+        message.info("An error occurred while fetching data. Please try again.");
+
+      });
+  }
+
+  useEffect(() => {
+    fetchData();
+
   }, []);
+
+
+
 
   const editCoatch = (recode) => {
     console.log(recode);
@@ -27,6 +51,7 @@ const AddCoatch = () => {
   }
 
   const deleteCoatch = (recode) => {
+
     Modal.confirm({
       title: "Are you sure, you want to delete this coatch?",
       okText: "Yes",
@@ -43,6 +68,8 @@ const AddCoatch = () => {
             // Handle errors
             console.error('Error:', error);
           });
+
+        window.location.reload();
       }
     });
 
@@ -88,7 +115,7 @@ const AddCoatch = () => {
       title: 'Actions',
       render: (recode) => {
         return <>
-          <div className='flex gap-5'>
+          <div key={recode.key} className='flex gap-5'>
             <EditOutlined onClick={editCoatch} />
             <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(recode)} />
           </div>
@@ -98,7 +125,7 @@ const AddCoatch = () => {
   ];
 
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -118,7 +145,7 @@ const AddCoatch = () => {
       <FormDialog open={open} handleClose={handleClose} />
       {
         loading ? (<LoadingSpinner />) : (<><Button onClick={handleClickOpen} className='mb-[10px]'>+ Add Coatch </Button>
-          <Table key={columns.map(temp => temp.key)} columns={columns} dataSource={dataSource} className='border-4 overflow-y-auto h-[500px]' ></Table></>)
+          <Table rowKey={5} columns={columns} dataSource={dataSource} className='border-4 overflow-y-auto h-[500px]' ></Table></>)
 
       }
 
