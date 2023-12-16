@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, Button, Modal, message } from 'antd';
+import { Table, Button, Modal, message, Input } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 import FormDialog from '../Popups/addCoatch.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
@@ -13,6 +13,14 @@ const AddCoatch = () => {
   //show all data
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  //filter serachbar
+  const [filterData, setFilterData] = useState();
+
+  const filterDataSource = (e) => {
+    setFilterData(dataSource.filter(temp => temp.name.toLowerCase().includes(e.target.value)));
+  }
+
 
   const fetchData = () => {
     fetch('http://localhost:5000/api/coatch/show')
@@ -24,6 +32,7 @@ const AddCoatch = () => {
       })
       .then(data => {
         setDataSource(data)
+        setFilterData(data);
       }).then(setInterval(() => {
         setLoading(false);
       }, 100))
@@ -139,13 +148,23 @@ const AddCoatch = () => {
 
   return (
 
-    <div className='border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px]'>
+    <div className='border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
       <FormDialog open={open} handleClose={handleClose} />
+
       {
-        loading ? (<LoadingSpinner />) : (<><Button onClick={handleClickOpen} className='mb-[10px]'>+ Add Coatch </Button>
-          <Table rowKey={5} columns={columns} dataSource={dataSource} className='border-4 overflow-y-auto h-[500px]' ></Table></>)
+        loading ? (<LoadingSpinner />) : (
+          <>
+
+            <div className='flex gap-4 mb-[10px] '>
+
+              <Button onClick={handleClickOpen} >+ Add Coatch </Button>
+              <Input type='text' placeholder='Search Coatchs' onChange={filterDataSource}></Input>
+            </div>
+
+            <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' ></Table>
+          </>)
 
       }
 
@@ -158,3 +177,5 @@ const AddCoatch = () => {
 }
 
 export default AddCoatch
+
+
