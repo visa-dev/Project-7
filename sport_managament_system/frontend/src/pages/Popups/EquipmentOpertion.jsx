@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -7,11 +7,6 @@ import axios from 'axios';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import { TextField, MenuItem, Select } from '@mui/material';
-
-
-
-
-
 
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -28,24 +23,30 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-export default function FormDialog({ open, handleClose, operation, data }) {
+
+export default function FormDialog({ open, handleClose, operation, data, edit }) {
+
+    // useEffect(() => {
+    //     //console.log(data.object);
+    //     setFormData(data.object ? data.object : "");
+    // }, [edit]);
+
 
     let [formData, setFormData] = useState({
         gametype: '',
         name: '',
-        gender: '',
-        dob: '',
-        email: '',
-        mobile: '',
+        qty: '',
+        available: '',
         photo: ''
 
     });
-    const { gametype, name, gender, dob, email, mobile, photo } = formData;
+
+    const { gametype, name, qty, available, photo } = formData;
 
 
     const handleAddCoatch = async () => {
 
-        await axios.post('http://localhost:5000/api/coatch/add', JSON.stringify(formData), {
+        await axios.post('http://localhost:5000/api/equipment/add', JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -53,10 +54,8 @@ export default function FormDialog({ open, handleClose, operation, data }) {
             .then((res) => {
 
                 operation(); //fetch data for realtime update
+               
                 setFormData({});
-
-
-
 
             })
             .catch(error => {
@@ -72,7 +71,8 @@ export default function FormDialog({ open, handleClose, operation, data }) {
     const handleUpdateCoatch = async () => {
 
 
-        await axios.put(`http://localhost:5000/api/coatch/update/${data.object._id}`, JSON.stringify(formData), {
+
+        await axios.put(`http://localhost:5000/api/eqipment/update/${data.object._id}`, JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -99,8 +99,11 @@ export default function FormDialog({ open, handleClose, operation, data }) {
     if (data.val === "add") {
 
         tempfunction = handleAddCoatch;
+
     } if (data.val === "update") {
+        // setFormData(data.object);
         tempfunction = handleUpdateCoatch;
+
 
     }
 
@@ -112,6 +115,7 @@ export default function FormDialog({ open, handleClose, operation, data }) {
         setFormData({ ...formData, [name]: value });
 
     }
+
 
     return (
         <React.Fragment>
@@ -128,11 +132,16 @@ export default function FormDialog({ open, handleClose, operation, data }) {
                 <div className=' mx-auto pl-[150px] pr-[150px]'>
                     <form action="">
                         <div className='mb-[20px]'>
-                            <label className=''>Game Type : </label>
+
+                            <div className='mb-[20px]'>
+                                <TextField name='name' value={name} placeholder='Enter Name' label="Equipment Name" onChange={handleChnage} />
+                            </div>
+
+                            <label className=''>GameType: </label>
                             <Select name='gametype' value={gametype} className='w-[130px]' onChange={handleChnage} >
 
                                 <MenuItem value="Cricket">Cricket</MenuItem>
-                                <MenuItem value="ValyBall">ValyBall</MenuItem>
+                                <MenuItem value="VolleyBall">VolleyBall</MenuItem>
                                 <MenuItem value="Elle">Elle</MenuItem>
                                 <MenuItem value="Badminton">Badminton</MenuItem>
                                 <MenuItem value="Carrom">Carrom</MenuItem>
@@ -140,28 +149,13 @@ export default function FormDialog({ open, handleClose, operation, data }) {
                             </Select>
 
                         </div>
-
                         <div className='mb-[20px]'>
-                            <TextField name='name' value={name} placeholder='Enter Name' label="Name" onChange={handleChnage} />
+                            <TextField name='qty' value={qty} placeholder='Enter Name' label="Qty" onChange={handleChnage} />
+                        </div>
+                        <div className='mb-[20px]'>
+                            <TextField name='available' value={available} placeholder='Enter Name' label="Avialable" onChange={handleChnage} />
                         </div>
 
-                        <div className='mb-[15px]'>
-                            <label>Gender: </label>
-                            <Select name="gender" value={gender} className='w-[165px]' onChange={handleChnage} >
-                                <MenuItem value="Male">Male</MenuItem>
-                                <MenuItem value="Female">Female</MenuItem>
-                                <MenuItem value="Other">Other</MenuItem>
-
-                            </Select></div>
-                        <div className='mb-[20px]'>
-                            <input type="date" name="dob" value={dob} onChange={handleChnage} ></input>
-                        </div>
-                        <div className='mb-[20px]'>
-                            <TextField name='email' value={email} placeholder='Enter Email' label="Email" onChange={handleChnage} />
-                        </div>
-                        <div className='mb-[20px]'>
-                            <TextField name='mobile' value={mobile} placeholder='Enter Mobile' label="Moble" onChange={handleChnage} />
-                        </div>
                         <div className='mb-[20px]'>
                             <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
                                 Upload Photo

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, message, Input } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
-import FormDialog from '../Popups/AddCoatch.jsx';
+import FormDialog from '../Popups/CoatchOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
 
 
 
 const AddCoatch = () => {
 
-  let data = {};
+  const [edit, setEdit] = useState(false);
+
   //show all data
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -122,13 +123,13 @@ const AddCoatch = () => {
       title: 'Actions',
       render: (recode) => {
         const tempData = JSON.stringify(recode);
-        const rowId = JSON.parse(tempData);
+        const row = JSON.parse(tempData);
 
         return <>
           <div key={recode.key} className='flex gap-5'>
 
-            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: rowId, title: "Update Coatch" })} />
-            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(rowId._id)} />
+            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: row, title: "Update Coatch" })} />
+            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(row._id)} />
           </div>
         </>
       }
@@ -145,20 +146,12 @@ const AddCoatch = () => {
 
     if (item.val === "update") {
       // data = { title: "Update Coatch", option: item };
-      data = item;
-      
-
-
-
+      setEdit(true);
+      setParams(item);
     } if (item.val === "add") {
-      data = item;;
-
-
+      setParams(item);
     }
-
     setOpen(true);
-    setParams(data);
-
 
   };
 
@@ -174,10 +167,10 @@ const AddCoatch = () => {
 
   return (
 
-    <div className='border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
+    <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
-      <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} />
+      <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
 
       {
         loading ? (<LoadingSpinner />) : (
