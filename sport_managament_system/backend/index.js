@@ -43,7 +43,7 @@ const connectDB = async () => {
         });
         console.log("Connected");
     } catch (error) {
-        console.log("Not Connected");
+        console.log(error.message);
     }
 }
 
