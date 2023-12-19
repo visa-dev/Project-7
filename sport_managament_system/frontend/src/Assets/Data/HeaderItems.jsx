@@ -1,36 +1,36 @@
 const addminNavLinks = [
     {
-        path: '/admin/addachivement',
+        path: '/admin/achivement',
         display: 'ACHIVEMENT'
 
     },
     {
-        path: '/admin/addcoatch',
+        path: '/admin/coatch',
         display: 'COATCH '
 
     },
     {
-        path: '/admin/addequipment',
+        path: '/admin/equipment',
         display: 'EQUIPMENT'
 
     },
     {
-        path: '/admin/addgallary',
+        path: '/admin/gallary',
         display: 'GALLARY'
 
     },
     {
-        path: '/admin/addnews',
+        path: '/admin/news',
         display: 'NEWS'
 
     },
     {
-        path: '/admin/addshedule',
+        path: '/admin/shedule',
         display: 'SHEDULE'
 
     },
     {
-        path: '/admin/addscore',
+        path: '/admin/score',
         display: 'SCORE'
 
     }
