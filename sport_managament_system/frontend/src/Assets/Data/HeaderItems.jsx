@@ -15,15 +15,15 @@ const addminNavLinks = [
 
     },
     {
-        path: '/admin/gallary',
-        display: 'GALLARY'
+        path: '/admin/sport',
+        display: 'SPORT'
 
     },
-    {
-        path: '/admin/news',
-        display: 'NEWS'
+    // {
+    //     path: '/admin/news',
+    //     display: 'NEWS'
 
-    },
+    // },
     {
         path: '/admin/shedule',
         display: 'SHEDULE'

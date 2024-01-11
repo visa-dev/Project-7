@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, message, Input } from 'antd';
 import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
-import FormDialog from '../Popups/EquipmentOpertions.jsx';
+import FormDialog from '../Popups/SheduleOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
 
 
-const Equipment = () => {
+const Shedule = () => {
   const [edit, setEdit] = useState(false);
 
   //show all data
@@ -17,13 +17,14 @@ const Equipment = () => {
   const [filterData, setFilterData] = useState();
 
   const filterDataSource = (e) => {
-    setFilterData(dataSource.filter(temp => temp.name.toLowerCase().includes(e.target.value)));
+   
+   setFilterData(dataSource.filter(temp => temp.eventName.toLowerCase().includes(e.target.value)));
   }
 
 
   const fetchData = async () => {
 
-    await fetch('http://localhost:5000/api/equipment/show')
+    await fetch('http://localhost:5000/api/shedule/show')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -65,7 +66,7 @@ const Equipment = () => {
       okType: "danger",
       onOk: () => {
 
-        axios.delete(`http://localhost:5000/api/equipment/delete/${id}`)
+        axios.delete(`http://localhost:5000/api/shedule/delete/${id}`)
           .then(() => {
             // Handle the response from the server
             fetchData();
@@ -88,25 +89,25 @@ const Equipment = () => {
   const columns = [
     {
       key: '1',
-      title: 'Equipment Name',
-      dataIndex: 'name'
+      title: 'Event Name',
+      dataIndex: 'eventName'
     },
     {
       key: '2',
       title: 'Game Type',
-      dataIndex: 'gametype'
+      dataIndex: 'gameType'
     },
     {
       key: '3',
-      title: 'Qty',
-      dataIndex: 'qty'
+      title: 'Date',
+      dataIndex: 'date'
     },
     {
-      key: '4',
-      title: 'Available',
-      dataIndex: 'available'
+      key: '5',
+      title: 'Venue',
+      dataIndex: 'venue'
     },
- 
+
     {
       key: '7',
       title: 'Actions',
@@ -117,7 +118,7 @@ const Equipment = () => {
         return <>
           <div key={recode.key} className='flex gap-5'>
 
-            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: row, title: "Update Equipment" })} />
+            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: row, title: "Update Shedule" })} />
             <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(row._id)} />
           </div>
         </>
@@ -167,8 +168,9 @@ const Equipment = () => {
 
             <div className='flex gap-4 mb-[10px] '>
 
-              <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Equipment" })} > + Add Equipment </Button>
-              <Input type='text' placeholder='Search Equipment' onChange={filterDataSource}></Input>
+
+              <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Shedule" })} > + Add Shedule </Button>
+              <Input type='text' placeholder='Search Shedule' onChange={filterDataSource}></Input>
             </div>
 
             <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
@@ -184,6 +186,6 @@ const Equipment = () => {
   );
 }
 
-export default Equipment
+export default Shedule
 
 

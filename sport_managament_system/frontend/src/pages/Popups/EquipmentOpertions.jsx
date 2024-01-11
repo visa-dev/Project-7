@@ -11,13 +11,6 @@ import { TextField, MenuItem, Select } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-
-
-
-
-
-
-
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -31,7 +24,6 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 
-
 export default function FormDialog({ open, handleClose, operation, data, edit }) {
 
     // useEffect(() => {
@@ -40,23 +32,21 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
     // }, [edit]);
 
     const [sports, setSports] = useState([]);
-    let [formData, setFormData] = useState({
+    const [formData, setFormData] = useState({
         gametype: '',
         name: '',
-        gender: '',
-        dob: '',
-        email: '',
-        mobile: '',
+        qty: '',
+        available: '',
         photo: ''
 
     });
 
-    const { gametype, name, gender, dob, email, mobile, photo } = formData;
+    const { gametype, name, qty, available, photo } = formData;
 
 
-    const handleAddCoatch = async () => {
+    const handleAddEquipment = async () => {
 
-        await axios.post('http://localhost:5000/api/coatch/add', JSON.stringify(formData), {
+        await axios.post('http://localhost:5000/api/equipment/add', JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -64,6 +54,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
             .then((res) => {
 
                 operation(); //fetch data for realtime update
+
                 setFormData({});
 
             })
@@ -77,11 +68,12 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
 
     }
 
-    const handleUpdateCoatch = async () => {
+    const handleUpdateEquipment = async () => {
+
+        ;
 
 
-
-        await axios.put(`http://localhost:5000/api/coatch/update/${data.object._id}`, JSON.stringify(formData), {
+        await axios.put(`http://localhost:5000/api/equipment/update/${data.object._id}`, JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -106,11 +98,12 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
     let tempfunction;
 
     if (data.val === "add") {
-        tempfunction = handleAddCoatch;
+
+        tempfunction = handleAddEquipment;
 
     } if (data.val === "update") {
         // setFormData(data.object);
-        tempfunction = handleUpdateCoatch;
+        tempfunction = handleUpdateEquipment;
 
 
     }
@@ -155,7 +148,6 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
 
 
     return (
-
         <React.Fragment>
 
             <Dialog
@@ -168,53 +160,42 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
                     <center className='font-[700] '>{data.title}</center>
                 </DialogTitle>
                 <div className=' mx-auto pl-[150px] pr-[150px]'>
+                    <form action="">
+                        <div className='mb-[20px]'>
 
-                    <div className='mb-[20px] '>
-                        <label htmlFor="">Game Type : </label>
-                        <Select name='gametype' value={gametype} className='w-[130px]' onChange={handleChnage} >
+                            <div className='mb-[20px]'>
+                                <TextField name='name' value={name} placeholder='Enter Name' label="Equipment Name" onChange={handleChnage} />
+                            </div>
 
-
-                            {
-                                sports.map((item) =>
-                                    <MenuItem value={item.sportName} >{item.sportName}</MenuItem>
-                                )
-                            }
-
-                        </Select>
+                            <label className=''>GameType: </label>
+                            <Select name='gametype' value={gametype} className='w-[130px]' onChange={handleChnage} >
 
 
-                    </div>
+                                {
+                                    sports.map((item) =>
+                                        <MenuItem value={item.sportName} >{item.sportName}</MenuItem>
+                                    )
+                                }
 
-                    <div className='mb-[20px]'>
-                        <TextField name='name' value={name} placeholder='Enter Name' label="Name" onChange={handleChnage} />
-                    </div>
+                            </Select>
 
-                    <div className='mb-[15px]'>
-                        <select name="" className='w-[222px] h-[50px]' onChange={handleChnage}>
-                            <option value={gender}>Male</option>
-                            <option value={gender}>Female</option>
-                            <option value={gender}>Other</option>
-                        </select>
-                    </div>
-                    <div className='mb-[20px]'>
-                        <label htmlFor="" className='mr-[25px]'>DOB</label>
-                        <input type="date" defaultValue="dd" name="dob" value={dob} onChange={handleChnage} className=' w-[170px] h-[50px]'></input>
-                    </div>
-                    <div className='mb-[20px]'>
-                        <TextField name='email' value={email} placeholder='Enter Email' label="Email" onChange={handleChnage} />
-                    </div>
-                    <div className='mb-[20px]'>
-                        <TextField name='mobile' value={mobile} placeholder='Enter Mobile' label="Moble" onChange={handleChnage} />
-                    </div>
-                    <div className='mb-[20px]'>
-                        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                            Upload Photo
-                            <VisuallyHiddenInput type="file" value={photo} onChange={handleChnage} name='photo' />
-                        </Button>
-                    </div>
+                        </div>
+                        <div className='mb-[20px]'>
+                            <TextField name='qty' value={qty} placeholder='Enter Name' label="Qty" onChange={handleChnage} />
+                        </div>
+                        <div className='mb-[20px]'>
+                            <TextField name='available' value={available} placeholder='Enter Name' label="Avialable" onChange={handleChnage} />
+                        </div>
+
+                        <div className='mb-[20px]'>
+                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                Upload Photo
+                                <VisuallyHiddenInput type="file" value={photo} onChange={handleChnage} name='photo' />
+                            </Button>
+                        </div>
 
 
-
+                    </form>
                 </div>
 
                 <DialogActions>

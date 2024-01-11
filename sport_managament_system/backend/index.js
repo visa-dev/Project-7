@@ -8,7 +8,8 @@ import bodyParser from "body-parser";
 // import authRoute from './Routes/authRoute.js';
 import coatchRoutes from './Routes/CoatchRoutes.js';
 import equipmentRoutes from './Routes/EquipmentRoutes.js';
-
+import sheduleRoutes from './Routes/SheduleRoutes.js';
+import sportRoutes from './Routes/SportRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -24,7 +25,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 //app.use('/api/auth', authRoute);
 app.use('/api/coatch',coatchRoutes);
+app.use('/api/shedule',sheduleRoutes);
 app.use('/api/equipment',equipmentRoutes);
+app.use('/api/sport',sportRoutes);
+
 
 app.use(cookieParser);
 
