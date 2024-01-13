@@ -8,7 +8,7 @@ const CoatchSchema = new mongoose.Schema({
     dob: { type: String },
     email: { type: String },
     mobile: { type: String },
-    photo: { type: String },
+    photo: { type: String},
 
 }
 

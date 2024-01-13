@@ -65,10 +65,8 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
 
     const handleUpdateShedule = async () => {
 
-        console.log("D");
-
-
-        await axios.put(`http://localhost:5000/api/shedule/update/${data.object._id}`, JSON.stringify(formData), {
+     
+await axios.put(`http://localhost:5000/api/shedule/update/${data.object._id}`, JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -109,6 +107,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
         const { value, name } = e.target;
         //console.log(value, name);
         setFormData({ ...formData, [name]: value });
+       
 
     }
 
@@ -160,22 +159,28 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
                 <div className=' mx-auto pl-[150px] pr-[150px]'>
                     <form action="">
                         <div className='mb-[20px]'>
+                            <label className=''>GameType: </label>
 
                             <div className='mb-[20px]'>
                                 <TextField name='eventName' placeholder='Enter Event Name' label="Event" plavalue={eventName} onChange={handleChnage} />
                             </div>
 
-                            <label className=''>GameType: </label>
-                            <Select name='gametype' value={gameType} className='w-[130px]' onChange={handleChnage} >
+                            <div>
+                                <label className=''>GameType: </label>
+
+                                <Select name='gameType' value={gameType} className='w-[130px]' onChange={handleChnage} >
 
 
-                                {
-                                    sports.map((item) =>
-                                        <MenuItem value={item.sportName} >{item.sportName}</MenuItem>
-                                    )
-                                }
+                                    {
+                                        sports.map((item) =>
+                                            <MenuItem value={item.sportName} >{item.sportName}</MenuItem>
+                                        )
+                                    }
 
-                            </Select>
+                                </Select>
+
+                            </div>
+
 
                         </div>
                         <div className='mb-[20px]'>

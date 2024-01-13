@@ -47,6 +47,7 @@ export const deleteSport = async (req, res) => {
 export const updateSport = async (req, res) => {
     const id = req.params.id;
     const updateData = req.body;
+
     try {
         const deleted = await Sport.findByIdAndUpdate(id, updateData, { new: true });
         if (deleted) {

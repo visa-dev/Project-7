@@ -1,6 +1,7 @@
 import Coatch from '../models/Coatch.js';
 
 
+
 export const showCoatch = async (req, res) => {
 
     try {
@@ -12,8 +13,10 @@ export const showCoatch = async (req, res) => {
     }
 }
 
+
+
 export const addCoatch = async (req, res) => {
-    //console.log(req.body);
+
     const { gametype, name, gender, dob, email, mobile, photo } = req.body;
 
     try {
@@ -26,10 +29,27 @@ export const addCoatch = async (req, res) => {
             mobile: mobile,
             photo: photo
 
-
         });
 
+
+
         await newCoatch.save();
+
+        if (req.files != null) {
+            
+            const path = `public/${newCoatch._id}.jpg`;
+            const file = req.files.photo;
+            file.mv(path, (error) => {
+                if (error) {
+                    return res.status(ec.serverError).json({
+                        status: "error",
+                        message: "Couldn't save the profile picture.",
+                        error: error.message,
+                    });
+                }
+            });
+        }
+
 
         res.status(200).json({ success: true, message: 'Coatch Create Ok' });
 

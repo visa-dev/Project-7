@@ -12,8 +12,28 @@ export const showShedule = async (req, res) => {
     }
 }
 
+export const showSheduleByGameType = async (req, res) => {
+
+    const game = req.params.type;
+   
+
+    try {
+
+
+        const allShedule = await Shedule.find({ gameType: game });
+        res.status(200).json(allShedule);
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: 'Shedule Create No' });
+    }
+
+}
+
+
+
+
 export const addShedule = async (req, res) => {
-  
+
     const { eventName, date, time, venue, gameType } = req.body;
 
     try {
@@ -48,8 +68,10 @@ export const deleteShedule = async (req, res) => {
 }
 
 export const updateShedule = async (req, res) => {
+
     const id = req.params.id;
     const updateData = req.body;
+ 
     try {
         const deleted = await Shedule.findByIdAndUpdate(id, updateData, { new: true });
         if (deleted) {

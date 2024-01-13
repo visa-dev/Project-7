@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, message, Input } from 'antd';
-import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, ProfileOutlined } from '@ant-design/icons';
 import FormDialog from '../Popups/CoatchOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
-
+import ImageViewer from '../Popups/ImageViwer.jsx';
 
 
 const AddCoatch = () => {
 
   const [edit, setEdit] = useState(false);
+
+  const [coatchPhoto, setCoatchPhoto] = useState('');
+  const [view, setView] = useState(false);
 
   //show all data
   const [dataSource, setDataSource] = useState([]);
@@ -81,7 +84,12 @@ const AddCoatch = () => {
       }
     });
 
+  }
 
+  const viewCoatch = (id) => {
+
+    setCoatchPhoto('../../../public/' + id + '.jpg');
+    setView(true);
 
 
   }
@@ -130,6 +138,7 @@ const AddCoatch = () => {
 
             <EditOutlined onClick={() => handleClickOpen({ val: "update", object: row, title: "Update Coatch" })} />
             <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteCoatch(row._id)} />
+            <ProfileOutlined style={{ color: 'blue' }} onClick={() => viewCoatch(row._id)} />
           </div>
         </>
       }
@@ -160,6 +169,10 @@ const AddCoatch = () => {
     setOpen(false);
 
   };
+  const handleViewClose = () => {
+    setView(false);
+
+  }
 
 
 
@@ -171,7 +184,7 @@ const AddCoatch = () => {
 
 
       <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
-
+      <ImageViewer open={view} handleViewClose={handleViewClose} imgId={coatchPhoto}/>
       {
         loading ? (<LoadingSpinner />) : (
           <>
@@ -183,13 +196,23 @@ const AddCoatch = () => {
             </div>
 
             <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
+           
           </>)
 
       }
 
 
+      <div>
+
+
+
+      </div>
+
 
     </div >
+
+
+
 
 
   );

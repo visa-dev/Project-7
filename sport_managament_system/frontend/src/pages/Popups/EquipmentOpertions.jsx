@@ -187,13 +187,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
                             <TextField name='available' value={available} placeholder='Enter Name' label="Avialable" onChange={handleChnage} />
                         </div>
 
-                        <div className='mb-[20px]'>
-                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                                Upload Photo
-                                <VisuallyHiddenInput type="file" value={photo} onChange={handleChnage} name='photo' />
-                            </Button>
-                        </div>
-
+                       
 
                     </form>
                 </div>
