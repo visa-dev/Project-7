@@ -1,9 +1,11 @@
 import express, { json } from 'express';
 import cookieParser from 'cookie-parser';
+import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import bodyParser from "body-parser";
+import fileUpload from 'express-fileupload';
 
 // import authRoute from './Routes/authRoute.js';
 import coatchRoutes from './Routes/CoatchRoutes.js';
@@ -11,7 +13,9 @@ import equipmentRoutes from './Routes/EquipmentRoutes.js';
 import sheduleRoutes from './Routes/SheduleRoutes.js';
 import sportRoutes from './Routes/SportRoutes.js';
 import achivementRoutes from './Routes/AchivementRoutes.js';
-import fileUpload from 'express-fileupload';
+import ScoreRoutes from './Routes/ScoreCardRoutes.js';
+import AuthRoutes from './Routes/AuthRoutes.js';
+
 
 
 
@@ -21,10 +25,11 @@ app.use("/public", express.static("public"));
 const port = process.env.PORT || 8080;
 
 const corsOptions = {
-    origin: true
+    origin: true,
+
+    credentials: true
 }
-
-
+app.use(cookieParser());
 // enable file upload
 app.use(fileUpload());
 
@@ -34,22 +39,38 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
+const verifyAdmin = (req, res, next) => {
+    const token = req.cookies.token;
+    //console.log(token);
+    if (!token) {
+        return console.log("Token not availble");
+    } else {
+        jwt.verify(token, process.env.HASH_SECRET, (err, decoded) => {
+            if (err) {
+                return console.log("Token Not Match");
+
+            } else {
+                next();
+            }
+        });
+    }
 
 
-//app.use('/api/auth', authRoute);
-app.use('/api/coatch', coatchRoutes);
+
+}
+
+app.use('/admin', AuthRoutes);
+
+app.use('/api/coatch', verifyAdmin, coatchRoutes);
 app.use('/api/shedule', sheduleRoutes);
 app.use('/api/equipment', equipmentRoutes);
 app.use('/api/sport', sportRoutes);
 app.use('/api/achivement', achivementRoutes);
+app.use('/api/score', ScoreRoutes);
 
-app.use(cookieParser);
 
-// app.get('/api', (req, res) => {
-//     res.send("Api is working");
-// })
 
-//databse connection
+
 
 //mongoose.set('stricQuery', false);
 const connectDB = async () => {
@@ -57,6 +78,7 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+
         });
         console.log("Connected");
     } catch (error) {
@@ -69,7 +91,7 @@ const connectDB = async () => {
 
 
 
-//routes
+//route
 
 
 

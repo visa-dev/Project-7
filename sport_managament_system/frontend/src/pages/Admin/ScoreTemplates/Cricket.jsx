@@ -8,8 +8,10 @@ import axios from 'axios';
 import UpdateSpinner from '../../Loading/UpdateSpinner';
 import BarChartView from '../Charts/BarChartView';
 
+import LineChartView from '../Charts/LineChartView';
 
-const FootBall = (props) => {
+
+const Cricket = (props) => {
 
     const [load, setLoad] = useState(false);
     const [disble, setDisble] = useState(false);
@@ -19,12 +21,13 @@ const FootBall = (props) => {
 
         team1Name: '',
         team2Name: '',
-        team1Score: '',
-        team2Score: '',
-        eventName: '',
-        gameType: '',
+        team1Score: '0',
+        team2Score: '0',
+        wicket: '0',
+        over: '',
+        wicketFalling: [],
         _id: '',
-        date: ''
+        date: '',
 
     });
 
@@ -47,6 +50,8 @@ const FootBall = (props) => {
 
     }
 
+
+
     const cheakScoreCard = async () => {
 
         await axios.get(`http://localhost:5000/api/score/show/${props.sheduleId}`, JSON.stringify(formData), {
@@ -56,9 +61,11 @@ const FootBall = (props) => {
         }).then(res => {
 
             if (res.data === null) {
+
                 setDisble(true);
 
             } else {
+
                 setDisble(false);
                 setScoreData(res.data);
 
@@ -106,6 +113,7 @@ const FootBall = (props) => {
     }
     const updateScore = async () => {
 
+
         await axios.put(`http://localhost:5000/api/score/update/livescore/${props.sheduleId}`, JSON.stringify(formData), {
             headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +148,7 @@ const FootBall = (props) => {
                 axios.delete(`http://localhost:5000/api/score/delete/${id}`)
                     .then(() => {
 
-                        window.location.reload();
+                        window.location.reload('ff');
                     })
                     .catch(error => {
                         // Handle errors
@@ -204,14 +212,12 @@ const FootBall = (props) => {
             <div className=' flex justify-center gap-10 m-[10px]'>
 
                 <div>
-                    <TextField name='team1Name' label="Team Name 1" placeholder='Team Name 1' onChange={handleChange}></TextField>
+                    <TextField name='team1Name' label="Batting Team" placeholder='Team Name 1' onChange={handleChange}></TextField>
 
                 </div>
-                <div>
 
-                </div>
                 <div>
-                    <TextField name='team2Name' label="Team Name 2" placeholder='Team Name 2' onChange={handleChange}></TextField>
+                    <TextField name='team2Name' label="Balling Team" placeholder='Team Name 2' onChange={handleChange}></TextField>
                 </div>
                 <div className='w-[100px] h-[50px] mt-[10px]'>
 
@@ -237,15 +243,19 @@ const FootBall = (props) => {
 
             <div className=' flex justify-center gap-10 '>
                 <div>
-                    <TextField name='team1Score' label="Team-1 Score" placeholder='Score' onChange={handleScoreUpdate}></TextField>
+                    <TextField name='team1Score' label="Score" placeholder='Score' onChange={handleScoreUpdate}></TextField>
 
                 </div>
                 <div>
+                    <TextField name='wicket' label="Wicket" placeholder='Enter Wicket' onChange={handleScoreUpdate}></TextField>
 
                 </div>
                 <div>
-                    <TextField name='team2Score' label="Team-2 Score" placeholder='Score' onChange={handleScoreUpdate} ></TextField>
+                    <TextField name='over' label="Over" placeholder='Enter Over' onChange={handleScoreUpdate}></TextField>
+
                 </div>
+
+
                 <div>
 
                     {
@@ -259,16 +269,18 @@ const FootBall = (props) => {
 
             </div>
 
-            <div className='flex justify-center mt-[25px] '>
-                <BarChartView dataSource={scoreData}></BarChartView>
+            <div className='flex justify-center mt-[15px] '>
+                <div className='grid  sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 justify-center items-center '>
+                    <div>
+                        <BarChartView dataSource={scoreData}></BarChartView>
+                    </div>
+                    <div>
+                        <LineChartView dataSource={scoreData}></LineChartView>
+                    </div>
+
+
+                </div>
             </div>
-
-
-
-
-
-
-
 
 
         </div>
@@ -276,4 +288,4 @@ const FootBall = (props) => {
     )
 }
 
-export default FootBall
+export default Cricket

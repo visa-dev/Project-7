@@ -44,7 +44,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
 
 
     const handleAddCoatch = async () => {
-  
+
         const ftest = new FormData();
         Object.entries(formData).forEach(([key, value]) => {
             ftest.append(key, value);
@@ -137,7 +137,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
     }
     const imageUpload = (event) => {
         const file = event.target.files[0];
-     
+
         if (file) {
             const reader = new FileReader();
 
@@ -235,11 +235,11 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
                             <TextField name='mobile' value={formData.mobile} placeholder='Enter Mobile' label="Moble" onChange={handleChnage} />
                         </div>
                         <div className='mb-[20px]'>
-                        <label htmlFor="">Add Image: </label>
-                        <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                            Upload Photo
-                            <VisuallyHiddenInput type="file" onChange={imageUpload} name='photo' accept='image/*' />
-                        </Button>
+                            <label htmlFor="">Add Image: </label>
+                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                Upload Photo
+                                <VisuallyHiddenInput type="file" onChange={imageUpload} name='photo' accept='image/*' />
+                            </Button>
                         </div>
 
                     </div>

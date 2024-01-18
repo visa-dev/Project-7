@@ -43,7 +43,7 @@ const Header = (props) => {
 
         <div className="flex items-center justify-around">
           <div className='w-[70px] min-w-[70px]'>
-           <Link to={props.role}> <img src={Logo} alt="uov-sport" /></Link>
+           <Link to='/admin/home'> <img src={Logo} alt="uov-sport" /></Link>
           </div>
 
 
@@ -70,9 +70,9 @@ const Header = (props) => {
                 </figure>
               </Link>
             </div>
-            <Link to='/login'>
+            {/* <Link to='/login'>
               <button className='bg-primaryColor py-2 px-6 text-white font-[600] h-[44px] flex items-center justify-center rounded-[50px]'>Login</button>
-            </Link>
+            </Link> */}
 
             <span className='lg:hidden' onClick={toggleMenu}>
               <BiMenu className='w-6 h-6 cursor-pointer' />

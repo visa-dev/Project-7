@@ -5,6 +5,10 @@ import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 import FormDialog from '../Popups/SportOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
 
+import Header from '../../component/common/Header.jsx'
+import Footer from '../../component/common/Footer.jsx'
+import { addminNavLinks } from '../../Assets/Data/HeaderItems.jsx';
+import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets/Data/FooterItems.jsx';
 
 const Sport = () => {
   const [edit, setEdit] = useState(false);
@@ -145,31 +149,36 @@ const Sport = () => {
 
 
   return (
-
-    <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
-
-
-      <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
-
-      {
-        loading ? (<LoadingSpinner />) : (
-          <>
-
-            <div className='flex gap-4 mb-[10px] '>
+    <div>
+      <Header navLinks={addminNavLinks} role='/admin/home' />
+      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
-              <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Sport" })} > + Add Sport </Button>
-              <Input type='text' placeholder='Search Sport' onChange={filterDataSource}></Input>
-            </div>
+        <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
 
-            <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
-          </>)
+        {
+          loading ? (<LoadingSpinner />) : (
+            <>
 
-      }
-
+              <div className='flex gap-4 mb-[10px] '>
 
 
-    </div >
+                <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Sport" })} > + Add Sport </Button>
+                <Input type='text' placeholder='Search Sport' onChange={filterDataSource}></Input>
+              </div>
+
+              <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
+            </>)
+
+        }
+
+
+
+      </div >
+      <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
+    </div>
+
+
 
 
   );

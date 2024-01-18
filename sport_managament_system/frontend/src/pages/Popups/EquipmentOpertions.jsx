@@ -41,7 +41,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
 
     });
 
-    const { gametype, name, qty, available, photo } = formData;
+    const { gametype, name, qty, available } = formData;
 
 
     const handleAddEquipment = async () => {

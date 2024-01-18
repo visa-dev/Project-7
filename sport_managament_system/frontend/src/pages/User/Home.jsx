@@ -1,5 +1,5 @@
 
-import Header from '../../component/common/Header.js'
+import Header from '../../component/common/Header.jsx'
 import Footer from '../../component/common/Footer.jsx'
 
 import React from 'react'

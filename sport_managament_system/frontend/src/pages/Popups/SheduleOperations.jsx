@@ -159,7 +159,7 @@ await axios.put(`http://localhost:5000/api/shedule/update/${data.object._id}`, J
                 <div className=' mx-auto pl-[150px] pr-[150px]'>
                     <form action="">
                         <div className='mb-[20px]'>
-                            <label className=''>GameType: </label>
+                           
 
                             <div className='mb-[20px]'>
                                 <TextField name='eventName' placeholder='Enter Event Name' label="Event" plavalue={eventName} onChange={handleChnage} />

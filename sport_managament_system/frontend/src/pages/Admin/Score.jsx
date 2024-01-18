@@ -1,19 +1,35 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { TextField, MenuItem, Select } from '@mui/material';
-import { Table, Button, Modal, message, Input } from 'antd';
-import VollyBall from './ScoreTemplates/VollyBall';
+import { InputLabel, MenuItem, Select } from '@mui/material';
+import { Table } from 'antd';
+import VolleyBall from './ScoreTemplates/VolleyBall';
 import FootBall from './ScoreTemplates/FootBall';
+import Cricket from './ScoreTemplates/Cricket';
+import Badminton from './ScoreTemplates/Badminton.jsx';
+import Ruger from './ScoreTemplates/Ruger.jsx';
+import { ProfileOutlined } from '@ant-design/icons';
 
+import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
+import Chess from './ScoreTemplates/Chess.jsx';
+
+import Header from '../../component/common/Header.jsx'
+import Footer from '../../component/common/Footer.jsx'
+import { addminNavLinks } from '../../Assets/Data/HeaderItems.jsx';
+import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets/Data/FooterItems.jsx';
 
 const Score = () => {
 
-  const [sports, setSports] = useState(['cricket']);
+  const [sports, setSports] = useState([]);
+
   const [events, setEvents] = useState([]);
+  const [game, setGame] = useState();
+  const [load, setLoad] = useState(true);
+  const [open, setOpen] = useState(false);
+
 
   const [formData, setFormData] = useState({
-    gametype: 'cricket',
-    event: ''
+    gameType: '',
+
   });
 
 
@@ -29,7 +45,9 @@ const Score = () => {
       })
       .then(data => {
         setSports(data);
-      })
+      }).then(setInterval(() => {
+        setLoad(false);
+      }, 250))
       .catch(error => {
         // Handle errors here
         console.error('Fetch error:', error);
@@ -42,6 +60,7 @@ const Score = () => {
 
   const getEvents = async (type) => {
 
+
     await fetch(`http://localhost:5000/api/shedule/show/${type}`)
       .then(response => {
         if (!response.ok) {
@@ -52,7 +71,7 @@ const Score = () => {
       })
       .then(data => {
         setEvents(data);
-        console.log(data);
+
 
       })
       .catch(error => {
@@ -78,49 +97,146 @@ const Score = () => {
     const { value, name } = e.target;
 
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-
     getEvents(value);
-  
 
+    setOpen(false);
+    setLoad(false);
+
+  }
+  // const handleChnageEvenntSelector = (e) => {
+  //   const { value, name } = e.target;
+
+  //   setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+
+  // }
+
+  const columns = [
+    {
+      key: '1',
+      title: 'Event Name',
+      dataIndex: 'eventName'
+    },
+    {
+      key: '2',
+      title: 'Game Type',
+      dataIndex: 'gameType'
+    },
+    {
+      key: '3',
+      title: 'Date',
+      dataIndex: 'date'
+    },
+    {
+      key: '5',
+      title: 'Venue',
+      dataIndex: 'venue'
+    },
+
+    {
+      key: '7',
+      title: 'Actions',
+      render: (recode) => {
+        const tempData = JSON.stringify(recode);
+        const row = JSON.parse(tempData);
+
+        return <>
+          <div key={recode.key} className='flex gap-5'>
+
+            <ProfileOutlined style={{ color: 'blue' }} onClick={() => { createScoreCard(recode.gameType, row._id, recode.eventName) }} />
+
+          </div>
+        </>
+      }
+    }
+  ];
+
+  const createScoreCard = (gameType, sheduleId, eventName) => {
+
+
+    switch (gameType) {
+      case 'Cricket':
+        setGame(<Cricket gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+      case 'FootBall':
+        setGame(<FootBall gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+      case 'VolleyBall':
+        setGame(<VolleyBall gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+      case 'Badminton':
+        setGame(<Badminton gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+      case 'Chess':
+        setGame(<Chess gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+      case 'Ruger':
+        setGame(<Ruger gameType={gameType} sheduleId={sheduleId} eventName={eventName} />);
+        break;
+
+      default:
+        break;
+
+
+    }
+
+
+
+    setOpen(true);
+    setLoad(true);
+
+
+    setTimeout(() => {
+      setLoad(false);
+    }, 250);
 
 
   }
+
+
+
+
   return (
-    <div className='container'>
+    <div>
+      <Header navLinks={addminNavLinks} role='/admin/home' />
+      <div className='container'>
 
 
-      <div className='flex justify-center mt-[25px]'>
-        <label htmlFor="">Select Sport : </label>
-        <Select name='gametype' value={formData.gametype} className='w-[250px] m-[25px]' onChange={handleChnage}  >
+        {
+          load ? (<LoadingSpinner />) : (<div className='flex justify-center mt-[5px] gap-5'>
+
+            <div>
+              <InputLabel >Select Sport</InputLabel>
+
+              <Select name='gameType' value={formData.gameType} className='w-[450px] mb-[15px]' onChange={handleChnage}  >
 
 
-          {
-            sports.map((item) =>
-              <MenuItem value={item.sportName}  >{item.sportName}</MenuItem>
-            )
-          }
+                {
+                  sports.map((item) =>
+                    <MenuItem value={item.sportName}  >{item.sportName}</MenuItem>
+                  )
+                }
 
-        </Select>
-
-        <label htmlFor="">Select Event : </label>
-        <Select name='event' value={formData.event} className='w-[250px] m-[25px] ' onChange={handleChnage} >
+              </Select>
 
 
-          {
-            events.map((item) =>
-              <MenuItem value={item.eventName} >{item.eventName}</MenuItem>
-            )
-          }
+            </div>
 
-        </Select>
+
+
+          </div>)
+        }
+
+
+        {
+
+          open ? (load ? (<LoadingSpinner />) : (<>{game} </>)) : (<><Table columns={columns} dataSource={events}></Table></>)
+        }
+
+
+
       </div>
-
-      <VollyBall />
-      <FootBall />
-
-
+      <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
     </div>
-
   )
 }
 

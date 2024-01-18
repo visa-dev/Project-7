@@ -6,6 +6,10 @@ import FormDialog from '../Popups/CoatchOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
 import ImageViewer from '../Popups/ImageViwer.jsx';
 
+import Header from '../../component/common/Header.jsx'
+import Footer from '../../component/common/Footer.jsx'
+import { addminNavLinks } from '../../Assets/Data/HeaderItems.jsx';
+import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets/Data/FooterItems.jsx';
 
 const AddCoatch = () => {
 
@@ -51,7 +55,7 @@ const AddCoatch = () => {
 
       });
   }
-
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     fetchData();
 
@@ -179,37 +183,36 @@ const AddCoatch = () => {
 
 
   return (
-
-    <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
-
-
-      <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
-      <ImageViewer open={view} handleViewClose={handleViewClose} imgId={coatchPhoto}/>
-      {
-        loading ? (<LoadingSpinner />) : (
-          <>
-
-            <div className='flex gap-4 mb-[10px] '>
-
-              <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Coatch" })} > + Add Coatch </Button>
-              <Input type='text' placeholder='Search Coatchs' onChange={filterDataSource}></Input>
-            </div>
-
-            <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
-           
-          </>)
-
-      }
+    <div>
+      <Header navLinks={addminNavLinks} role='/admin/home' />
+      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
-      <div>
+        <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
+        <ImageViewer open={view} handleViewClose={handleViewClose} imgId={coatchPhoto} />
+        {
+          loading ? (<LoadingSpinner />) : (
+            <>
+
+              <div className='flex gap-4 mb-[10px] '>
+
+                <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Coatch" })} > + Add Coatch </Button>
+                <Input type='text' placeholder='Search Coatchs' onChange={filterDataSource}></Input>
+              </div>
+
+              <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
+
+            </>)
+
+        }
+        <div>
+        </div>
+      </div >
+      <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
+
+    </div>
 
 
-
-      </div>
-
-
-    </div >
 
 
 

@@ -13,9 +13,9 @@ export const showAchivement = async (req, res) => {
 }
 
 export const addAchivement = async (req, res) => {
-  
+
     const { achivementName, gameType, discription, photo } = req.body;
-  
+
 
     try {
         const newAchivement = new Achivement({
@@ -30,7 +30,7 @@ export const addAchivement = async (req, res) => {
         await newAchivement.save();
 
         if (req.files != null) {
-           
+
             const path = `public/${newAchivement._id}.jpg`;
             const file = req.files.photo;
             file.mv(path, (error) => {
@@ -53,10 +53,13 @@ export const addAchivement = async (req, res) => {
 }
 
 export const deleteAchivement = async (req, res) => {
+
     const id = req.params.id;
     try {
         const deleted = await Achivement.findByIdAndDelete(id);
+
         if (deleted) {
+
             res.status(200).json({ message: `Delete Ok` });
         }
     } catch (error) {

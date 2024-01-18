@@ -9,7 +9,7 @@ import UpdateSpinner from '../../Loading/UpdateSpinner';
 import BarChartView from '../Charts/BarChartView';
 
 
-const FootBall = (props) => {
+const Ruger = (props) => {
 
     const [load, setLoad] = useState(false);
     const [disble, setDisble] = useState(false);
@@ -276,4 +276,4 @@ const FootBall = (props) => {
     )
 }
 
-export default FootBall
+export default Ruger
