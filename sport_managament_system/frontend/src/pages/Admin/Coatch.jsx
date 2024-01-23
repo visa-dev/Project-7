@@ -13,6 +13,9 @@ import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets
 
 const AddCoatch = () => {
 
+
+
+
   const [edit, setEdit] = useState(false);
 
   const [coatchPhoto, setCoatchPhoto] = useState('');

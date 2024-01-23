@@ -21,8 +21,8 @@ const Shedule = () => {
   const [filterData, setFilterData] = useState();
 
   const filterDataSource = (e) => {
-   
-   setFilterData(dataSource.filter(temp => temp.eventName.toLowerCase().includes(e.target.value)));
+
+    setFilterData(dataSource.filter(temp => temp.eventName.toLowerCase().includes(e.target.value)));
   }
 
 
@@ -166,28 +166,31 @@ const Shedule = () => {
       <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
 
 
-<FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
+        <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
 
-{
-  loading ? (<LoadingSpinner />) : (
-    <>
+        {
+          loading ? (<LoadingSpinner />) : (
+            <>
 
-      <div className='flex gap-4 mb-[10px] '>
+              <div className='flex gap-4 mb-[10px] '>
 
 
-        <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Shedule" })} > + Add Shedule </Button>
-        <Input type='text' placeholder='Search Shedule' onChange={filterDataSource}></Input>
+                <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Shedule" })} > + Add Shedule </Button>
+                <Input type='text' placeholder='Search Shedule' onChange={filterDataSource}></Input>
+              </div>
+
+              <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
+            </>)
+
+        }
+
+
+
+      </div >
+      <div>
+        <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
       </div>
 
-      <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
-    </>)
-
-}
-
-
-
-</div >
-<Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
     </div>
 
 

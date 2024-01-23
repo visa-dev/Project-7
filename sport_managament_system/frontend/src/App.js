@@ -26,7 +26,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path='/' element={<div>User inter Face</div>}></Route>
+        {/* <Route path='/' element={<Login />}></Route> */}
         <Route path='/admin/login' element={<Login />}></Route>
         <Route path='/admin/register' element={<SignUp />}></Route>
 

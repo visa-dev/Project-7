@@ -12,7 +12,7 @@ import HashLoader from "react-spinners/HashLoader";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 
-const override: CSSProperties = {
+const overrideStyle = {
     display: "block",
     margin: "0 auto",
     marginTop: '200px',
@@ -23,6 +23,7 @@ const override: CSSProperties = {
 const Login = () => {
 
     const navigate = useNavigate();
+    const [loged, setLoged] = useState(false);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -35,9 +36,6 @@ const Login = () => {
         username: '',
         password: '',
     });
-
-    const [loged, setLoged] = useState(false);
-    const [load, setLoad] = useState(true);
 
     const validateForm = () => {
         let valid = true;
@@ -68,19 +66,15 @@ const Login = () => {
             const username = formData.username;
             const password = formData.password;
             await axios.post('http://localhost:5000/admin/login', { username, password })
-                .then((res) => {
+                .then(async (res) => {
                     // console.log(res.data)
                     if (res.data === 'Ok') {
                         setLoged(true);
-                        //alert(res.data);
+                        await new Promise(resolve => setTimeout(resolve, 2500));
 
-
-                        setInterval(() => {
-                            setLoad(false);
-                        }, 1650);
-
+                        navigate('../admin/home');
                     } else if (res.data === "Fail") {
-                        setLoged(false);
+
 
                         alert(res.data);
                     } else {
@@ -109,83 +103,77 @@ const Login = () => {
         <div>
             {
 
-                loged ? (load ? (<HashLoader
-                    cssOverride={override}
+                loged ? (<HashLoader
+                    cssOverride={overrideStyle}
                     color="#4d36d6"
 
                     size={100}
                     speedMultiplier={1}
-                />) : (<></>)) : (
+                />) : (< Box
 
-                    < Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column', // Align children vertically
+                        alignItems: 'center', // Center items horizontally
+                        maxWidth: '500px',
+                        margin: 'auto',
+                        marginTop: '100px',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                        backgroundColor: 'white',
 
-                        component="form"
-                        onSubmit={handleSubmit}
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column', // Align children vertically
-                            alignItems: 'center', // Center items horizontally
-                            maxWidth: '500px',
-                            margin: 'auto',
-                            marginTop: '100px',
-                            padding: '20px',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                            backgroundColor: 'white',
+                    }
+                    }
 
-                        }
-                        }
-
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <TextField
-                            fullWidth
-                            label="Username"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            error={Boolean(errors.username)}
-                            helperText={errors.username}
-                            margin="normal"
-                        />
-                        <TextField
-                            fullWidth
-                            type="password"
-                            label="Password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            error={Boolean(errors.password)}
-                            helperText={errors.password}
-                            margin="normal"
-                            sx={{ mt: 2 }}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
-                            label="Remember Me"
-                            sx={{ mt: 1, textAlign: 'left' }}
-                        />
-                        <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
-                            Login
-                        </Button>
-                        <Box sx={{ mt: 2, textAlign: 'center' }}>
-                            <Link href="#" variant="body2">
-                                Forgot Password?
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <TextField
+                        fullWidth
+                        label="Username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                        error={Boolean(errors.username)}
+                        helperText={errors.username}
+                        margin="normal"
+                    />
+                    <TextField
+                        fullWidth
+                        type="password"
+                        label="Password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        error={Boolean(errors.password)}
+                        helperText={errors.password}
+                        margin="normal"
+                        sx={{ mt: 2 }}
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={formData.rememberMe} onChange={handleChange} name="rememberMe" color="primary" />}
+                        label="Remember Me"
+                        sx={{ mt: 1, textAlign: 'left' }}
+                    />
+                    <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+                        Login
+                    </Button>
+                    <Box sx={{ mt: 2, textAlign: 'center' }}>
+                        <Link href="#" variant="body2">
+                            Forgot Password?
+                        </Link>
+                        <Box mt={1}>
+                            <Link href='register' variant="body2">
+                                Don't have an account? Sign Up
                             </Link>
-                            <Box mt={1}>
-                                <Link href='register' variant="body2">
-                                    Don't have an account? Sign Up
-                                </Link>
-                            </Box>
                         </Box>
-                    </Box >
-                )
+                    </Box>
+                </Box >)
             }
-
-
-
         </div>
 
     )

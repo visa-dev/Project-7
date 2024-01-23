@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 
 
 export const login = async (req, res) => {
-//console.log(req.body);
+    //console.log(req.body);
     try {
         dotenv.config();
         const logedAdmin = await Admin.findOne({ userName: req.body.username });
@@ -16,9 +16,13 @@ export const login = async (req, res) => {
 
         if (logedAdmin !== null) {
             if (await bcrypt.compare(req.body.password, logedAdmin.password)) {
-                const token = jwt.sign({ id: logedAdmin._id }, process.env.HASH_SECRET, { expiresIn: '1d' });
-                res.cookie('token', token);
-               
+                const token = jwt.sign({ id: logedAdmin._id }, process.env.HASH_SECRET, { expiresIn: '1h' });
+                res.cookie('token', token, {
+                    httpOnly: true,
+                    secure: true, // Send only over HTTPS
+                    sameSite: 'strict',
+                });
+
                 res.send('Ok')
             } else {
                 res.send('Fail');
@@ -41,7 +45,7 @@ export const signup = async (req, res) => {
     const { userName, password, email, mobile, firstName, lastName } = req.body;
     const hashed = await bcrypt.hash(password, 10);
 
-    
+
     try {
         const newAdmin = new Admin({
             firstName: firstName,

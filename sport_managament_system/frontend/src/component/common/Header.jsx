@@ -66,7 +66,8 @@ const Header = (props) => {
             <div >
               <Link to='/'>
                 <figure className='w-[35px] h-[35px] rounded-full cursor-pointer'>
-                  <img src={userIcon} alt='#' className='w-full rounded-full' />
+                  <Link to='../admin/home' ><img src={userIcon} alt='#' className='w-full rounded-full' /></Link>
+                  
                 </figure>
               </Link>
             </div>
