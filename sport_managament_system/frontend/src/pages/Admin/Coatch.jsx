@@ -188,7 +188,7 @@ const AddCoatch = () => {
   return (
     <div>
       <Header navLinks={addminNavLinks} role='/admin/home' />
-      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
+      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px]  pb-[400px]'>
 
 
         <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />

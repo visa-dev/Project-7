@@ -5,8 +5,8 @@ const addminNavLinks = [
 
     },
     {
-        path: '/admin/coatch',
-        display: 'COATCH '
+        path: '/admin/coach',
+        display: 'COACH '
 
     },
     {
@@ -19,11 +19,7 @@ const addminNavLinks = [
         display: 'SPORT'
 
     },
-    // {
-    //     path: '/admin/news',
-    //     display: 'NEWS'
 
-    // },
     {
         path: '/admin/shedule',
         display: 'SHEDULE'
@@ -33,51 +29,40 @@ const addminNavLinks = [
         path: '/admin/score',
         display: 'SCORE'
 
+    }, {
+        path: '/admin/reservation',
+        display: 'RESERVATION'
     }
+
 ]
 
 const userNavLinks = [
     {
         path: '/',
-        display: 'user1'
+        display: 'HOME'
 
     },
     {
-        path: '/',
-        display: 'user2'
+        path: '/user/uov-score',
+        display: 'SCORES'
 
     },
     {
-        path: '/',
-        display: 'user3'
+        path: '/user/uov-coach',
+        display: 'COACH'
 
     },
+    // {
+    //     path: '/user/uov-shedule',
+    //     display: 'SHEDULE'
+
+    // },
     {
-        path: '/',
-        display: 'user4'
+        path: '/user/uov-equepments',
+        display: 'EQUIPMENTS'
 
     }
 ]
-const coatchNavLinks = [
-    {
-        path: '/',
-        display: 'coatch1'
 
-    },
-    {
-        path: '/',
-        display: 'coatch2'
 
-    },
-    {
-        path: '/',
-        display: 'coatch3'
-
-    },
-    {
-        path: '/',
-        display: 'coatch4'
-
-    }
-]
-export { addminNavLinks, userNavLinks, coatchNavLinks }
+export { addminNavLinks, userNavLinks }

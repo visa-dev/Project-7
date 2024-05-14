@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const SheduleSchema = new mongoose.Schema({
 
     eventName: { type: String },
-    date: { type: Date },
+    date: { type: String},
     time: { type: String },
     venue: { type: String },
     gameType: { type: String },

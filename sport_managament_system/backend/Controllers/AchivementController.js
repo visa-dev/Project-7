@@ -6,6 +6,7 @@ export const showAchivement = async (req, res) => {
     try {
         const allAchivement = await Achivement.find();
         res.status(200).json(allAchivement);
+       //console.log(allAchivement)
 
     } catch (error) {
         res.status(400).json({ success: false, message: 'Achivement Create No' });

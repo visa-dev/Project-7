@@ -14,7 +14,7 @@ import Chess from './ScoreTemplates/Chess.jsx';
 
 import Header from '../../component/common/Header.jsx'
 import Footer from '../../component/common/Footer.jsx'
-import { addminNavLinks } from '../../Assets/Data/HeaderItems.jsx';
+import { addminNavLinks, userNavLinks } from '../../Assets/Data/HeaderItems.jsx';
 import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets/Data/FooterItems.jsx';
 
 const Score = () => {
@@ -28,7 +28,7 @@ const Score = () => {
 
 
   const [formData, setFormData] = useState({
-    gameType: 'Select',
+    gameType: '',
 
   });
 
@@ -197,8 +197,8 @@ const Score = () => {
 
   return (
     <div>
-      <Header navLinks={addminNavLinks} role='/admin/home' />
-      <div className='container pb-[500px]'>
+      <Header navLinks={userNavLinks} role='user' />
+      <div className='container'>
 
 
         {
@@ -235,7 +235,7 @@ const Score = () => {
 
 
       </div>
-      <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
+      {/* <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} /> */}
     </div>
   )
 }

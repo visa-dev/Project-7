@@ -72,7 +72,7 @@ const Badminton = (props) => {
                 console.error('Error:', error);
             });
 
-
+        
     }
 
 
@@ -176,6 +176,7 @@ const Badminton = (props) => {
 
     useEffect(() => {
         cheakScoreCard();
+
 
 
     }, []);

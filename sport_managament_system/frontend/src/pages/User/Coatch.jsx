@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Modal, message, Input } from 'antd';
-import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
-import FormDialog from '../Popups/SheduleOperations.jsx';
+import { EditOutlined, DeleteOutlined, ProfileOutlined } from '@ant-design/icons';
+import FormDialog from '../Popups/CoatchOperations.jsx';
 import LoadingSpinner from '../Loading/LoadingSpinner.jsx';
+import ImageViewer from '../Popups/ImageViwer.jsx';
 
 import Header from '../../component/common/Header.jsx'
 import Footer from '../../component/common/Footer.jsx'
-import { addminNavLinks } from '../../Assets/Data/HeaderItems.jsx';
+import { userNavLinks } from '../../Assets/Data/HeaderItems.jsx';
 import { socialLinks, quickLink01, quickLink02, quickLink03 } from '../../Assets/Data/FooterItems.jsx';
 
-const Shedule = () => {
+const AddCoatch = () => {
+
+
+
+
   const [edit, setEdit] = useState(false);
+
+  const [coatchPhoto, setCoatchPhoto] = useState('');
+  const [view, setView] = useState(false);
 
   //show all data
   const [dataSource, setDataSource] = useState([]);
@@ -21,14 +29,13 @@ const Shedule = () => {
   const [filterData, setFilterData] = useState();
 
   const filterDataSource = (e) => {
-
-    setFilterData(dataSource.filter(temp => temp.eventName.toLowerCase().includes(e.target.value)));
+    setFilterData(dataSource.filter(temp => temp.name.toLowerCase().includes(e.target.value)));
   }
 
 
   const fetchData = async () => {
 
-    await fetch('http://localhost:5000/api/shedule/show')
+    await fetch('http://localhost:5000/api/coatch/show')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -37,7 +44,7 @@ const Shedule = () => {
         return response.json();
       })
       .then(data => {
-        setDataSource(data);
+        setDataSource(data)
         setFilterData(data); // get frist time data otherwise empty table load
       }).then(setInterval(() => {
         setLoading(false);
@@ -51,7 +58,7 @@ const Shedule = () => {
 
       });
   }
-
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     fetchData();
 
@@ -62,15 +69,15 @@ const Shedule = () => {
 
 
 
-  const deleteShedule = (id) => {
+  const deleteCoatch = (id) => {
 
     Modal.confirm({
-      title: "Are you sure, you want to delete this shedule?",
+      title: "Are you sure, you want to delete this coatch?",
       okText: "Yes",
       okType: "danger",
       onOk: () => {
 
-        axios.delete(`http://localhost:5000/api/shedule/delete/${id}`)
+        axios.delete(`http://localhost:5000/api/coatch/delete/${id}`)
           .then(() => {
             // Handle the response from the server
             fetchData();
@@ -84,7 +91,12 @@ const Shedule = () => {
       }
     });
 
+  }
 
+  const viewCoatch = (id) => {
+
+    setCoatchPhoto('../../../public/' + id + '.jpg');
+    setView(true);
 
 
   }
@@ -93,42 +105,35 @@ const Shedule = () => {
   const columns = [
     {
       key: '1',
-      title: 'Event Name',
-      dataIndex: 'eventName'
+      title: 'Game Type',
+      dataIndex: 'gametype'
     },
     {
       key: '2',
-      title: 'Game Type',
-      dataIndex: 'gameType'
+      title: 'Name',
+      dataIndex: 'name'
     },
     {
       key: '3',
-      title: 'Date',
-      dataIndex: 'date'
+      title: 'Gender',
+      dataIndex: 'gender'
     },
-  
+    {
+      key: '4',
+      title: 'Birthday',
+      dataIndex: 'dob'
+    },
     {
       key: '5',
-      title: 'Venue',
-      dataIndex: 'venue'
+      title: 'Email',
+      dataIndex: 'email'
+    },
+    {
+      key: '6',
+      title: 'Mobile',
+      dataIndex: 'mobile'
     },
 
-    {
-      key: '7',
-      title: 'Actions',
-      render: (recode) => {
-        const tempData = JSON.stringify(recode);
-        const row = JSON.parse(tempData);
-
-        return <>
-          <div key={recode.key} className='flex gap-5'>
-
-            <EditOutlined onClick={() => handleClickOpen({ val: "update", object: row, title: "Update Shedule" })} />
-            <DeleteOutlined style={{ color: 'red' }} onClick={() => deleteShedule(row._id)} />
-          </div>
-        </>
-      }
-    }
   ];
 
 
@@ -136,39 +141,29 @@ const Shedule = () => {
 
   const [params, setParams] = useState(0);
 
-  const handleClickOpen = (item) => {
-
-
-    if (item.val === "update") {
-      // data = { title: "Update Coatch", option: item };
-      setEdit(true);
-      setParams(item);
-    } if (item.val === "add") {
-      setParams(item);
-    }
-    setOpen(true);
-
-  };
 
 
   const handleClose = () => {
     setOpen(false);
 
   };
+  const handleViewClose = () => {
+    setView(false);
+
+  }
 
 
 
 
 
   return (
-
     <div>
-      <Header navLinks={addminNavLinks} role='/admin/home' />
+      <Header navLinks={userNavLinks} role='user' />
       <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[400px] '>
 
 
         <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />
-
+        <ImageViewer open={view} handleViewClose={handleViewClose} imgId={coatchPhoto} />
         {
           loading ? (<LoadingSpinner />) : (
             <>
@@ -176,28 +171,30 @@ const Shedule = () => {
               <div className='flex gap-4 mb-[10px] '>
 
 
-                <Button onClick={() => handleClickOpen({ val: "add", object: '', title: "Add Shedule" })} > + Add Shedule </Button>
-                <Input type='text' placeholder='Search Shedule' onChange={filterDataSource}></Input>
+                <Input type='text' placeholder='Search Coatchs' onChange={filterDataSource}></Input>
               </div>
 
-              <Table columns={columns} dataSource={filterData} rowClassName={''} className='border-4 h-[500px] mt-[20px]'> </Table>
+              <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
+
             </>)
 
         }
-
-
-
+        <div>
+        </div>
       </div >
-      <div>
-        <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
-      </div>
+      <Footer socialLinks={socialLinks} quickLink01={quickLink01} quickLink02={quickLink02} quickLink03={quickLink03} />
 
     </div>
+
+
+
+
+
 
 
   );
 }
 
-export default Shedule
+export default AddCoatch
 
 

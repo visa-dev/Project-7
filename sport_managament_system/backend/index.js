@@ -84,6 +84,7 @@ const connectDB = async () => {
         });
         console.log("Connected");
     } catch (error) {
+       
         console.log(error.message);
     }
 }

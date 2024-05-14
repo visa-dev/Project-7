@@ -9,15 +9,6 @@ import axios from 'axios';
 import { TextField, MenuItem, Select } from '@mui/material';
 import DialogTitle from '@mui/material/DialogTitle';
 
-
-import { styled } from '@mui/material/styles';
-
-
-
-
-const { Option } = Select;
-
-
 export default function FormDialog({ open, handleClose, operation, data, edit }) {
 
     // useEffect(() => {
@@ -25,9 +16,9 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
     //     setFormData(data.object ? data.object : "");
     // }, [edit]);
 
-    const [coatchs, setCoatchs] = useState([]);
+    // const [coatchs, setCoatchs] = useState([]);
     const [formData, setFormData] = useState({
-        sportName: '',
+        sportName: 'Select',
         coatch: '',
 
     });
@@ -109,33 +100,33 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
     }
 
 
-    const getCoatches = async () => {
+    // const getCoatches = async () => {
 
-        await fetch('http://localhost:5000/api/coatch/show')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+    //     await fetch('http://localhost:5000/api/coatch/show')
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('Network response was not ok');
+    //             }
 
-                return response.json();
-            })
-            .then(data => {
-                setCoatchs(data);
+    //             return response.json();
+    //         })
+    //         .then(data => {
+    //             setCoatchs(data);
 
-            })
-            .catch(error => {
-                // Handle errors here
-                console.error('Fetch error:', error);
-                // Notify the user
-                // alert('An error occurred while fetching data. Please try again.');
+    //         })
+    //         .catch(error => {
+    //             // Handle errors here
+    //             console.error('Fetch error:', error);
+    //             // Notify the user
+    //             // alert('An error occurred while fetching data. Please try again.');
 
 
-            });
-    }
+    //         });
+    // }
 
-    useEffect(() => {
-        getCoatches();
-    }, []);
+    // useEffect(() => {
+    //     getCoatches();
+    // }, []);
 
 
     return (
@@ -156,15 +147,7 @@ export default function FormDialog({ open, handleClose, operation, data, edit })
                         <div className='mb-[20px]'>
                             <TextField name='sportName' placeholder='Enter Sport' label="Sport" value={sportName} onChange={handleChnage} />
                         </div >
-                        <div className='mb-[20px]'>
-                            <Select name='coatch' className='w-[222px]' onChange={handleChnage}  >
-                                {
-                                    coatchs.map((item) =>
-                                        <MenuItem value={item.name} >{item.name}</MenuItem>
-                                    )
-                                }
-                            </Select>
-                        </div>
+                       
 
                     </form>
                 </div>

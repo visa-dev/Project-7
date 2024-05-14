@@ -96,13 +96,9 @@ const Sport = () => {
       title: 'Sport',
       dataIndex: 'sportName'
     },
+    
     {
       key: '2',
-      title: 'Coatch',
-      dataIndex: 'coatch'
-    },
-    {
-      key: '3',
       title: 'Actions',
       render: (recode) => {
         const tempData = JSON.stringify(recode);
@@ -151,7 +147,7 @@ const Sport = () => {
   return (
     <div>
       <Header navLinks={addminNavLinks} role='/admin/home' />
-      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[20px] '>
+      <div className='bgImage border-2 pl-[100px] pr-[100px] pt-[20px] pb-[400px] '>
 
 
         <FormDialog open={open} handleClose={handleClose} operation={fetchData} data={params} edit={edit} />

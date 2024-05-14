@@ -193,7 +193,7 @@ const Achivement = () => {
                 <Input type='text' placeholder='Search Achivements' onChange={filterDataSource}></Input>
               </div>
 
-              <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px]' > </Table>
+              <Table columns={columns} dataSource={filterData} className='border-4 overflow-y-auto h-[500px] mb-[400px]' > </Table>
             </>)
 
         }

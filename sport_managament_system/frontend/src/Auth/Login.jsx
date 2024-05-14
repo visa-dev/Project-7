@@ -74,11 +74,9 @@ const Login = () => {
 
                         navigate('../admin/home');
                     } else if (res.data === "Fail") {
-
-
-                        alert(res.data);
+                        alert("Password Incorrect..!");
                     } else {
-                        alert(res.data);
+                        alert("User name not found..!");
                     }
 
                 })

@@ -16,6 +16,9 @@ export const login = async (req, res) => {
 
         if (logedAdmin !== null) {
             if (await bcrypt.compare(req.body.password, logedAdmin.password)) {
+
+
+
                 const token = jwt.sign({ id: logedAdmin._id }, process.env.HASH_SECRET, { expiresIn: '1h' });
                 res.cookie('token', token, {
                     httpOnly: true,
@@ -28,7 +31,7 @@ export const login = async (req, res) => {
                 res.send('Fail');
             }
         } else {
-            res.json('Admin not found')
+            res.send('not-found')
         }
 
 

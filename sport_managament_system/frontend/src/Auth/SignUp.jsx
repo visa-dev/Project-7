@@ -42,6 +42,10 @@ export default function SignUp() {
       errors.lastName = 'Last Name is required';
     }
 
+    if (!formData.userName.trim()) {
+      errors.userName = 'User Name is required';
+    }
+
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {

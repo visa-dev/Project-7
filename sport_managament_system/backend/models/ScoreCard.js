@@ -10,7 +10,7 @@ const ScoreCardSchema = new mongoose.Schema({
     over: Number,
     wicketFalling: Array,
     gameType: String,
-    date: Date,
+    date: String,
 
 
 

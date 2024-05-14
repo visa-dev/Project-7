@@ -22,7 +22,7 @@ const socialLinks = [
 
 ];
 
-const quickLink01 = [
+const contactData = [
 
     {
         path: "",
@@ -65,6 +65,27 @@ const quickLink02 = [
 
 ];
 
+const quickLink01= [
+
+    {
+        path: "",
+        display: 'temp'
+    },
+    {
+        path: "",
+        display: 'temp'
+    },
+    {
+        path: "",
+        display: 'temp'
+    },
+    {
+        path: "",
+        display: 'temp'
+    },
+
+];
+
 const quickLink03 = [
 
     {
@@ -86,4 +107,4 @@ const quickLink03 = [
 
 ];
 
-export { socialLinks, quickLink01, quickLink02,quickLink03 };
+export { socialLinks, contactData,quickLink01,quickLink02,quickLink03};
